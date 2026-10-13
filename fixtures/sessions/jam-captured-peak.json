@@ -1,0 +1,162 @@
+{
+  "id": "jam-captured-peak",
+  "title": "Captured Peak (control — should yield 0 unmarked)",
+  "bpm": 110,
+  "durationSec": 28,
+  "consent": true,
+  "createdAt": "2026-10-02T12:05:00.000Z",
+  "features": [
+    {
+      "t": 0,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 2,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 4,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 6,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 8,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 10,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 12,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 14,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 16,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 18,
+      "flux": 0.5,
+      "onsetDensity": 0.55,
+      "repetition": 0.5,
+      "commitment": 0.45
+    },
+    {
+      "t": 20,
+      "flux": 0.85,
+      "onsetDensity": 0.8,
+      "repetition": 0.2,
+      "commitment": 0.25
+    },
+    {
+      "t": 22,
+      "flux": 0.4,
+      "onsetDensity": 0.4,
+      "repetition": 0.6,
+      "commitment": 0.5
+    },
+    {
+      "t": 24,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 26,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 28,
+      "flux": 0.24,
+      "onsetDensity": 0.3,
+      "repetition": 0.86,
+      "commitment": 0.8
+    }
+  ],
+  "timeline": [
+    {
+      "id": "c1",
+      "t": 0,
+      "type": "session_start",
+      "label": "Start"
+    },
+    {
+      "id": "c2",
+      "t": 20,
+      "type": "near_miss_peak",
+      "label": "Peak"
+    },
+    {
+      "id": "c3",
+      "t": 20.5,
+      "type": "capture_marker",
+      "label": "Ableton Capture hit"
+    },
+    {
+      "id": "c4",
+      "t": 24,
+      "type": "safe_return",
+      "label": "Back"
+    }
+  ],
+  "nearMisses": [],
+  "seedWindows": [
+    {
+      "id": "seed-captured",
+      "startT": 18,
+      "endT": 22,
+      "format": "midi-json",
+      "label": "Intentionally captured",
+      "payload": {
+        "notes": [
+          {
+            "pitch": 60,
+            "start": 0,
+            "dur": 1,
+            "vel": 100
+          }
+        ]
+      }
+    }
+  ],
+  "notes": "Control fixture: peak has capture_marker — detector must ignore it."
+}

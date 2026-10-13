@@ -1,0 +1,577 @@
+{
+  "id": "jam-neon-corridor",
+  "title": "Neon Corridor (demo jam)",
+  "bpm": 96,
+  "durationSec": 74,
+  "consent": true,
+  "createdAt": "2026-10-02T12:00:00.000Z",
+  "features": [
+    {
+      "t": 0,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 2,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 4,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 6,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 8,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 10,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 12,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 14,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 16,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 18,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 20,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 22,
+      "flux": 0.35,
+      "onsetDensity": 0.4,
+      "repetition": 0.72,
+      "commitment": 0.68
+    },
+    {
+      "t": 24,
+      "flux": 0.42,
+      "onsetDensity": 0.45,
+      "repetition": 0.65,
+      "commitment": 0.58
+    },
+    {
+      "t": 26,
+      "flux": 0.5,
+      "onsetDensity": 0.52,
+      "repetition": 0.55,
+      "commitment": 0.48
+    },
+    {
+      "t": 28,
+      "flux": 0.62,
+      "onsetDensity": 0.65,
+      "repetition": 0.4,
+      "commitment": 0.38
+    },
+    {
+      "t": 30,
+      "flux": 0.9,
+      "onsetDensity": 0.88,
+      "repetition": 0.15,
+      "commitment": 0.2
+    },
+    {
+      "t": 32,
+      "flux": 0.75,
+      "onsetDensity": 0.7,
+      "repetition": 0.28,
+      "commitment": 0.3
+    },
+    {
+      "t": 34,
+      "flux": 0.5,
+      "onsetDensity": 0.48,
+      "repetition": 0.45,
+      "commitment": 0.4
+    },
+    {
+      "t": 36,
+      "flux": 0.35,
+      "onsetDensity": 0.35,
+      "repetition": 0.62,
+      "commitment": 0.5
+    },
+    {
+      "t": 38,
+      "flux": 0.28,
+      "onsetDensity": 0.3,
+      "repetition": 0.75,
+      "commitment": 0.62
+    },
+    {
+      "t": 40,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.85,
+      "commitment": 0.75
+    },
+    {
+      "t": 42,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.9,
+      "commitment": 0.85
+    },
+    {
+      "t": 44,
+      "flux": 0.22,
+      "onsetDensity": 0.3,
+      "repetition": 0.9,
+      "commitment": 0.85
+    },
+    {
+      "t": 46,
+      "flux": 0.24,
+      "onsetDensity": 0.3,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 48,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.86,
+      "commitment": 0.8
+    },
+    {
+      "t": 50,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 52,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 54,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 56,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 58,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 60,
+      "flux": 0.4,
+      "onsetDensity": 0.45,
+      "repetition": 0.65,
+      "commitment": 0.55
+    },
+    {
+      "t": 62,
+      "flux": 0.85,
+      "onsetDensity": 0.82,
+      "repetition": 0.18,
+      "commitment": 0.22
+    },
+    {
+      "t": 64,
+      "flux": 0.5,
+      "onsetDensity": 0.48,
+      "repetition": 0.45,
+      "commitment": 0.4
+    },
+    {
+      "t": 66,
+      "flux": 0.3,
+      "onsetDensity": 0.32,
+      "repetition": 0.75,
+      "commitment": 0.65
+    },
+    {
+      "t": 68,
+      "flux": 0.25,
+      "onsetDensity": 0.28,
+      "repetition": 0.85,
+      "commitment": 0.8
+    },
+    {
+      "t": 70,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 72,
+      "flux": 0.24,
+      "onsetDensity": 0.3,
+      "repetition": 0.88,
+      "commitment": 0.8
+    },
+    {
+      "t": 74,
+      "flux": 0.25,
+      "onsetDensity": 0.3,
+      "repetition": 0.86,
+      "commitment": 0.8
+    }
+  ],
+  "timeline": [
+    {
+      "id": "ev-1",
+      "t": 0,
+      "type": "session_start",
+      "label": "Jam start — consent granted"
+    },
+    {
+      "id": "ev-2",
+      "t": 2,
+      "type": "loop_engage",
+      "label": "Kick+hat loop on"
+    },
+    {
+      "id": "ev-3",
+      "t": 8,
+      "type": "chord",
+      "label": "Am – F pad"
+    },
+    {
+      "id": "ev-4",
+      "t": 22,
+      "type": "note",
+      "label": "Lead explores high register"
+    },
+    {
+      "id": "ev-5",
+      "t": 26,
+      "type": "note",
+      "label": "Unexpected interval cluster"
+    },
+    {
+      "id": "ev-6",
+      "t": 30,
+      "type": "near_miss_peak",
+      "label": "Peak novelty — uncaptured"
+    },
+    {
+      "id": "ev-7",
+      "t": 36,
+      "type": "abandon",
+      "label": "Dropped the lead, muted bus"
+    },
+    {
+      "id": "ev-8",
+      "t": 40,
+      "type": "safe_return",
+      "label": "Back to kick+hat loop"
+    },
+    {
+      "id": "ev-9",
+      "t": 40,
+      "type": "loop_engage",
+      "label": "Safe loop re-engaged"
+    },
+    {
+      "id": "ev-10",
+      "t": 62,
+      "type": "near_miss_peak",
+      "label": "Second walk-past (filter sweep)"
+    },
+    {
+      "id": "ev-11",
+      "t": 66,
+      "type": "abandon",
+      "label": "Sweep aborted"
+    },
+    {
+      "id": "ev-12",
+      "t": 68,
+      "type": "safe_return",
+      "label": "Home groove"
+    }
+  ],
+  "nearMisses": [
+    {
+      "id": "nm-jam-neon-corridor-1",
+      "sessionId": "jam-neon-corridor",
+      "approachT": 24,
+      "peakT": 30,
+      "abandonT": 36,
+      "safeLoopT": 38,
+      "noveltyPeak": 0.845,
+      "repetitionAfter": 0.75,
+      "unmarked": true,
+      "summary": "Around 30.0s you ramped into something new (novelty 0.84), then dropped back to a safe loop at 38.0s without capturing it.",
+      "graph": {
+        "nodes": [
+          {
+            "id": "nm-jam-neon-corridor-1:approach",
+            "kind": "Approach",
+            "t": 24,
+            "label": "Approach",
+            "score": 0.507
+          },
+          {
+            "id": "nm-jam-neon-corridor-1:peak",
+            "kind": "Peak",
+            "t": 30,
+            "label": "Peak novelty",
+            "score": 0.845
+          },
+          {
+            "id": "nm-jam-neon-corridor-1:abandon",
+            "kind": "Abandon",
+            "t": 36,
+            "label": "Abandon",
+            "score": 0.338
+          },
+          {
+            "id": "nm-jam-neon-corridor-1:safe",
+            "kind": "SafeLoop",
+            "t": 38,
+            "label": "Safe loop",
+            "score": 0.2
+          }
+        ],
+        "edges": [
+          {
+            "from": "nm-jam-neon-corridor-1:approach",
+            "to": "nm-jam-neon-corridor-1:peak",
+            "kind": "continue"
+          },
+          {
+            "from": "nm-jam-neon-corridor-1:peak",
+            "to": "nm-jam-neon-corridor-1:abandon",
+            "kind": "fork"
+          },
+          {
+            "from": "nm-jam-neon-corridor-1:abandon",
+            "to": "nm-jam-neon-corridor-1:safe",
+            "kind": "return"
+          }
+        ]
+      },
+      "seedWindowIds": [
+        "seed-peak-1",
+        "seed-audio-ref"
+      ]
+    },
+    {
+      "id": "nm-jam-neon-corridor-2",
+      "sessionId": "jam-neon-corridor",
+      "approachT": 56,
+      "peakT": 62,
+      "abandonT": 66,
+      "safeLoopT": 66,
+      "noveltyPeak": 0.7809999999999999,
+      "repetitionAfter": 0.75,
+      "unmarked": true,
+      "summary": "Around 62.0s you ramped into something new (novelty 0.78), then dropped back to a safe loop at 66.0s without capturing it.",
+      "graph": {
+        "nodes": [
+          {
+            "id": "nm-jam-neon-corridor-2:approach",
+            "kind": "Approach",
+            "t": 56,
+            "label": "Approach",
+            "score": 0.4685999999999999
+          },
+          {
+            "id": "nm-jam-neon-corridor-2:peak",
+            "kind": "Peak",
+            "t": 62,
+            "label": "Peak novelty",
+            "score": 0.7809999999999999
+          },
+          {
+            "id": "nm-jam-neon-corridor-2:abandon",
+            "kind": "Abandon",
+            "t": 66,
+            "label": "Abandon",
+            "score": 0.3124
+          },
+          {
+            "id": "nm-jam-neon-corridor-2:safe",
+            "kind": "SafeLoop",
+            "t": 66,
+            "label": "Safe loop",
+            "score": 0.2
+          }
+        ],
+        "edges": [
+          {
+            "from": "nm-jam-neon-corridor-2:approach",
+            "to": "nm-jam-neon-corridor-2:peak",
+            "kind": "continue"
+          },
+          {
+            "from": "nm-jam-neon-corridor-2:peak",
+            "to": "nm-jam-neon-corridor-2:abandon",
+            "kind": "fork"
+          },
+          {
+            "from": "nm-jam-neon-corridor-2:abandon",
+            "to": "nm-jam-neon-corridor-2:safe",
+            "kind": "return"
+          }
+        ]
+      },
+      "seedWindowIds": [
+        "seed-peak-2"
+      ]
+    }
+  ],
+  "seedWindows": [
+    {
+      "id": "seed-peak-1",
+      "startT": 26,
+      "endT": 34,
+      "format": "midi-json",
+      "label": "Uncaptured lead cluster @ peak 1",
+      "payload": {
+        "ppq": 480,
+        "bpm": 96,
+        "notes": [
+          {
+            "pitch": 69,
+            "start": 0,
+            "dur": 0.25,
+            "vel": 96
+          },
+          {
+            "pitch": 72,
+            "start": 0.25,
+            "dur": 0.25,
+            "vel": 100
+          },
+          {
+            "pitch": 76,
+            "start": 0.5,
+            "dur": 0.5,
+            "vel": 110
+          },
+          {
+            "pitch": 74,
+            "start": 1,
+            "dur": 0.25,
+            "vel": 90
+          },
+          {
+            "pitch": 79,
+            "start": 1.25,
+            "dur": 0.75,
+            "vel": 120
+          },
+          {
+            "pitch": 71,
+            "start": 2,
+            "dur": 0.5,
+            "vel": 85
+          }
+        ]
+      }
+    },
+    {
+      "id": "seed-peak-2",
+      "startT": 60,
+      "endT": 66,
+      "format": "midi-json",
+      "label": "Aborted filter-sweep motif",
+      "payload": {
+        "ppq": 480,
+        "bpm": 96,
+        "notes": [
+          {
+            "pitch": 57,
+            "start": 0,
+            "dur": 0.5,
+            "vel": 80
+          },
+          {
+            "pitch": 60,
+            "start": 0.5,
+            "dur": 0.5,
+            "vel": 88
+          },
+          {
+            "pitch": 64,
+            "start": 1,
+            "dur": 1,
+            "vel": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "seed-audio-ref",
+      "startT": 28,
+      "endT": 32,
+      "format": "audio-clip-ref",
+      "label": "Synthetic clip placeholder around peak 1",
+      "payload": {
+        "path": "fixtures/sessions/jam-neon-corridor.wav",
+        "startMs": 28000,
+        "endMs": 32000
+      }
+    }
+  ],
+  "audioRef": "fixtures/sessions/jam-neon-corridor.wav",
+  "notes": "Synthetic-only fixture. No copyrighted material. Feature frames are hand-authored for deterministic scoring."
+}

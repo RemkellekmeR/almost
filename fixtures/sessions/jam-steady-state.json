@@ -1,0 +1,174 @@
+{
+  "id": "jam-steady-state",
+  "title": "Steady State (no near-misses)",
+  "bpm": 100,
+  "durationSec": 40,
+  "consent": true,
+  "createdAt": "2026-10-02T12:10:00.000Z",
+  "features": [
+    {
+      "t": 0,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 2,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 4,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 6,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 8,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 10,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 12,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 14,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 16,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 18,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 20,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 22,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 24,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 26,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 28,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 30,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 32,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 34,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 36,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 38,
+      "flux": 0.24,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    },
+    {
+      "t": 40,
+      "flux": 0.22,
+      "onsetDensity": 0.28,
+      "repetition": 0.88,
+      "commitment": 0.82
+    }
+  ],
+  "timeline": [
+    {
+      "id": "s1",
+      "t": 0,
+      "type": "session_start",
+      "label": "Start"
+    },
+    {
+      "id": "s2",
+      "t": 4,
+      "type": "loop_engage",
+      "label": "Loop on"
+    }
+  ],
+  "nearMisses": [],
+  "seedWindows": [],
+  "notes": "Flat high-repetition jam — scoring should return zero near-misses."
+}
