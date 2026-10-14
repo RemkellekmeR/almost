@@ -36,10 +36,18 @@ export function loadAllSessions(): Session[] {
     .sort((a, b) => a.id.localeCompare(b.id));
 }
 
-/** In-memory session store seeded from fixtures. */
+/**
+ * In-memory session store seeded from fixtures.
+ *
+ * Jam fixtures are shared. The "active" jam pointer is keyed by an optional
+ * client key (MCP `Mcp-Session-Id` when served over Streamable HTTP) so two
+ * concurrent MCP clients do not clobber each other's default. Omit the key
+ * (in-process core / single-user web fallback) to use the shared "" slot.
+ */
 export class SessionStore {
   private sessions = new Map<string, Session>();
-  private activeId: string | null = null;
+  /** clientKey (mcp session id or "") → jam session id */
+  private activeByClient = new Map<string, string>();
 
   seedFromDisk(): void {
     for (const s of loadAllSessions()) {
@@ -48,7 +56,7 @@ export class SessionStore {
       this.sessions.set(s.id, rescored);
     }
     const first = [...this.sessions.values()][0];
-    if (first) this.activeId = first.id;
+    if (first) this.activeByClient.set("", first.id);
   }
 
   list(): Session[] {
@@ -59,21 +67,38 @@ export class SessionStore {
     return this.sessions.get(id);
   }
 
-  active(): Session | undefined {
-    return this.activeId ? this.sessions.get(this.activeId) : undefined;
+  /** Active jam for this client key (MCP session id, or "" when omitted). */
+  active(clientKey?: string): Session | undefined {
+    const key = clientKey ?? "";
+    const id = this.activeByClient.get(key);
+    return id ? this.sessions.get(id) : undefined;
   }
 
-  startSession(input?: {
-    sessionId?: string;
-    title?: string;
-    consent?: boolean;
-  }): Session {
+  /** Drop the active pointer for a closed MCP session (fixtures stay). */
+  releaseClient(clientKey: string): void {
+    if (!clientKey) return;
+    this.activeByClient.delete(clientKey);
+  }
+
+  activeClientCount(): number {
+    return [...this.activeByClient.keys()].filter((k) => k !== "").length;
+  }
+
+  startSession(
+    input?: {
+      sessionId?: string;
+      title?: string;
+      consent?: boolean;
+    },
+    clientKey?: string,
+  ): Session {
+    const key = clientKey ?? "";
     if (input?.sessionId && this.sessions.has(input.sessionId)) {
       const existing = this.sessions.get(input.sessionId)!;
       if (!existing.consent && input.consent !== true) {
         throw new Error("Consent required to start session.");
       }
-      this.activeId = existing.id;
+      this.activeByClient.set(key, existing.id);
       return existing;
     }
 
@@ -87,7 +112,7 @@ export class SessionStore {
     if (input?.consent === false) {
       throw new Error("Consent required. Almost is consent-based.");
     }
-    this.activeId = demo.id;
+    this.activeByClient.set(key, demo.id);
     return demo;
   }
 
@@ -107,8 +132,8 @@ export class SessionStore {
     return rescored;
   }
 
-  listNearMisses(sessionId?: string): NearMiss[] {
-    const s = sessionId ? this.sessions.get(sessionId) : this.active();
+  listNearMisses(sessionId?: string, clientKey?: string): NearMiss[] {
+    const s = sessionId ? this.sessions.get(sessionId) : this.active(clientKey);
     if (!s) return [];
     return s.nearMisses.filter((n) => n.unmarked);
   }
@@ -163,8 +188,8 @@ export class SessionStore {
     return { nearMissId, seed };
   }
 
-  summary(sessionId?: string): SessionSummary {
-    const s = sessionId ? this.sessions.get(sessionId) : this.active();
+  summary(sessionId?: string, clientKey?: string): SessionSummary {
+    const s = sessionId ? this.sessions.get(sessionId) : this.active(clientKey);
     if (!s) throw new Error("No active session");
     return sessionSummary(s);
   }

@@ -59,7 +59,8 @@ export function parseToolJson<T extends Record<string, unknown>>(result: CallToo
 
 /**
  * One-shot Streamable HTTP MCP session: connect → callTool → close.
- * Fine for demo/server-action traffic; store state lives on the MCP process.
+ * Each call gets its own Mcp-Session-Id; pass jam `sessionId` in tool args
+ * when continuity across connections is needed (web Alexa+ sim already does).
  */
 export async function withMcpClient<T>(fn: (client: Client) => Promise<T>): Promise<T> {
   const client = new Client({ name: "almost-web", version: "0.1.0" });

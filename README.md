@@ -18,13 +18,14 @@ Consent-based **Alexa+/MCP** agent that detects **creative near-misses** in a ja
 ```
 almost/
   apps/web/           Next.js Alexa+ sim + event graph viz (MCP-first, core fallback)
-  apps/mcp-server/    Streamable HTTP MCP (7 tools)
+  apps/mcp-server/    Streamable HTTP MCP (7 tools, stateful Mcp-Session-Id)
   packages/core/      Deterministic scoring, types, fixture store
   fixtures/sessions/  Synthetic canned jams (JSON + tiny wav placeholders)
   docs/DEMO.md        ≤3 min demo script
   docs/FRICTION_LOG.md
   docs/PRODUCT_FEEDBACK.md
   scripts/smoke-mcp.mjs
+  scripts/demo.mjs    npm run demo — MCP + web together
 ```
 
 ## Two demo modes
@@ -36,13 +37,25 @@ almost/
 
 Scoring is **always** deterministic in `@almost/core` — MCP is a transport, not a second scorer. No LLM keys required for either mode today.
 
+**Per-session active jam:** the MCP server is stateful Streamable HTTP. Each client gets a `Mcp-Session-Id`; the “active” jam pointer is keyed by that id (cleaned up on session close). Concurrent clients do not clobber each other. The web Alexa+ sim uses one-shot MCP connections and therefore always passes the jam `sessionId` in tool args for continuity across calls.
+
 ## Quick start
 
 ```bash
 cd /workspace/almost
 npm install
-npm run build -w @almost/core
+npm run build
 
+# One command — MCP + web (production builds)
+npm run demo
+# → MCP  http://127.0.0.1:3100/mcp   (health: /health)
+# → Web  http://localhost:3000       (mode pill should read "live MCP")
+# Ctrl+C stops both
+```
+
+Dev (two terminals):
+
+```bash
 # Terminal A — MCP (live mode)
 npm run dev:mcp
 # → http://127.0.0.1:3100/mcp   health: /health
@@ -73,26 +86,35 @@ Score fixtures from CLI (no MCP):
 npm run demo:score
 ```
 
-Smoke live MCP (Neon Corridor peaks @ 30s / 62s):
+Smoke live MCP (Neon Corridor peaks @ 30s / 62s + concurrent-client isolation):
 
 ```bash
 npm run start:mcp    # terminal A (built dist)
 npm run smoke:mcp    # terminal B
 ```
 
+### Demo utterances (Neon Corridor)
+
+| Say | Expect |
+|-----|--------|
+| “Alexa, what did I just walk past?” | Top unmarked near-miss (peaks @ **30s** and **62s** in the fixture). |
+| “Alexa, the other one” | Switches to the other peak and re-explains. |
+| “Alexa, take me back” | Cue at Approach for the selected miss. |
+| “Alexa, export that seed” | MIDI-JSON / audio-clip-ref preview. |
+
 ### Verify web → MCP
 
-1. `npm run build -w @almost/core && npm run build -w @almost/mcp-server`
+1. `npm run build`
 2. `npm run start:mcp` → confirm `curl -s http://127.0.0.1:3100/health`
-3. `npm run smoke:mcp` → expect `PASS: Neon Corridor near-misses @ 30s / 62s`
-4. `MCP_PUBLIC_URL=http://127.0.0.1:3100/mcp npm run dev:web` → open http://localhost:3000  
-   Mode pill should read **live MCP**; ask “what did I just walk past?” and confirm peaks ~30s / ~62s in the list.
+3. `npm run smoke:mcp` → expect Neon Corridor @ 30s / 62s **and** isolation PASS
+4. `npm run demo` (or `MCP_PUBLIC_URL=http://127.0.0.1:3100/mcp npm run start -w @almost/web`) → open http://localhost:3000  
+   Mode pill should read **live MCP**; ask “what did I just walk past?” then “the other one.”
 
 ## MCP tools
 
 | Tool | Role |
 |------|------|
-| `start_session` | Consent + activate fixture/demo session |
+| `start_session` | Consent + activate fixture/demo session (per MCP session) |
 | `ingest_timeline` | Append events, re-score |
 | `list_near_misses` | Unmarked near-misses (**full objects + graph**) |
 | `explain_near_miss` | Fixture explanation + graph (LLM stub later) |
@@ -120,6 +142,8 @@ See `.env.example`:
 
 - `LLM_API_KEY`, `LLM_PROVIDER` — explanations only (unused this pass)
 - `MCP_PUBLIC_URL` — Streamable HTTP URL web server actions call (also `NEXT_PUBLIC_MCP_URL`)
+- `MCP_PORT`, `MCP_HOST` — MCP listen address
+- `ALLOWED_HOSTS` — comma-separated Host allowlist when exposing beyond localhost (defaults to `localhost,127.0.0.1` if `MCP_HOST=0.0.0.0`)
 - `AWS_*` — optional Bedrock stretch (**HITL before spend**)
 - `DATABASE_URL` — optional; fixtures work in-memory
 
@@ -132,6 +156,9 @@ See `.env.example`:
 ## HITL (Remmy only)
 
 - Devpost submit
+- Public GitHub repo + license visibility
+- Deploy / public MCP + web URL
+- Demo video
 - AWS credits / Bedrock if used
 - Approve original/synthetic fixtures (no copyrighted tracks)
 - Optional Open Agent backup reg — do **not** divert Almost MVP

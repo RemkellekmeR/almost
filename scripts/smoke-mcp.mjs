@@ -3,6 +3,9 @@
  * Smoke: Streamable HTTP MCP tools against Neon Corridor fixture.
  * Expects MCP at MCP_PUBLIC_URL (default http://127.0.0.1:3100/mcp).
  *
+ * Also proves per-MCP-session isolation: two concurrent clients each
+ * start_session and neither sees the other's active jam via session_summary.
+ *
  * Usage:
  *   npm run start:mcp   # other terminal
  *   npm run smoke:mcp
@@ -53,8 +56,12 @@ function parse(result) {
   return data;
 }
 
-const client = new Client({ name: "almost-smoke", version: "0.1.0" });
-const transport = new StreamableHTTPClientTransport(new URL(url));
+async function connectClient(name) {
+  const client = new Client({ name, version: "0.1.0" });
+  const transport = new StreamableHTTPClientTransport(new URL(url));
+  await client.connect(transport);
+  return { client, transport };
+}
 
 console.log(`smoke: connecting ${url}`);
 
@@ -65,7 +72,13 @@ if (negotiated !== EXPECTED_PROTOCOL) {
   process.exit(1);
 }
 
-await client.connect(transport);
+const { client, transport } = await connectClient("almost-smoke");
+console.log(`smoke: mcp-session-id ${transport.sessionId ?? "(none)"}`);
+if (!transport.sessionId) {
+  console.error("FAIL: expected stateful Mcp-Session-Id after connect");
+  await client.close();
+  process.exit(1);
+}
 
 const tools = await client.listTools();
 const names = tools.tools.map((t) => t.name);
@@ -115,3 +128,59 @@ console.log(`smoke: explain ok (${explained.source})`);
 
 await client.close();
 console.log(`PASS: protocol ${negotiated} · Neon Corridor near-misses @ 30s / 62s via live MCP`);
+
+// --- Isolation: two concurrent MCP sessions, no cross-talk on active jam ---
+console.log("smoke: isolation — two concurrent clients");
+const a = await connectClient("almost-smoke-a");
+const b = await connectClient("almost-smoke-b");
+
+if (!a.transport.sessionId || !b.transport.sessionId) {
+  console.error("FAIL: isolation clients missing Mcp-Session-Id");
+  await a.client.close().catch(() => undefined);
+  await b.client.close().catch(() => undefined);
+  process.exit(1);
+}
+if (a.transport.sessionId === b.transport.sessionId) {
+  console.error("FAIL: both clients share the same Mcp-Session-Id");
+  await a.client.close().catch(() => undefined);
+  await b.client.close().catch(() => undefined);
+  process.exit(1);
+}
+
+parse(
+  await a.client.callTool({
+    name: "start_session",
+    arguments: { sessionId: "jam-neon-corridor", consent: true },
+  }),
+);
+parse(
+  await b.client.callTool({
+    name: "start_session",
+    arguments: { sessionId: "jam-steady-state", consent: true },
+  }),
+);
+
+// Omit jam sessionId — must resolve each client's own active pointer.
+const summaryA = parse(
+  await a.client.callTool({ name: "session_summary", arguments: {} }),
+);
+const summaryB = parse(
+  await b.client.callTool({ name: "session_summary", arguments: {} }),
+);
+
+const idA = summaryA.summary?.sessionId;
+const idB = summaryB.summary?.sessionId;
+console.log(`smoke: isolation A active=${idA} B active=${idB}`);
+
+if (idA !== "jam-neon-corridor" || idB !== "jam-steady-state") {
+  console.error(
+    `FAIL: isolation broken — expected A=jam-neon-corridor B=jam-steady-state; got A=${idA} B=${idB}`,
+  );
+  await a.client.close().catch(() => undefined);
+  await b.client.close().catch(() => undefined);
+  process.exit(1);
+}
+
+await a.client.close();
+await b.client.close();
+console.log("PASS: isolation — concurrent MCP sessions keep separate active jams");

@@ -150,7 +150,7 @@ Add dated entries as you hit them. Prefer concrete, reproducible notes over slog
 |--|--|
 | **Surface** | MCP |
 | **Severity** | medium (multi-user) |
-| **Friction** | The `getStore()` singleton keeps one "active session" for all clients, and each web call opens a fresh one-shot MCP connection. One client's `start_session` can change another client's default. |
-| **Workaround** | The web sim now always passes `sessionId` explicitly. |
-| **Suggestion** | Key state by `Mcp-Session-Id` before any public deploy. Also, `allowedHosts` when binding 0.0.0.0 only allows localhost/127.0.0.1, so a public hostname has to be added. |
-| **Status** | open |
+| **Friction** | The `getStore()` singleton kept one "active session" for all clients, and each web call opens a fresh one-shot MCP connection. One client's `start_session` could change another client's default. |
+| **Workaround** | (1) Stateful Streamable HTTP: active jam pointer is keyed by `Mcp-Session-Id`, cleaned up on session close. `smoke:mcp` proves two concurrent clients each keep their own active. (2) Web Alexa+ sim still passes jam `sessionId` explicitly on every tool call so one-shot connect→call→close stays correct across connections. (3) `ALLOWED_HOSTS` env (comma-separated) configures `allowedHosts` for a future public hostname; defaults unchanged (localhost/127.0.0.1 when binding `0.0.0.0`). |
+| **Suggestion** | Keep explicit jam `sessionId` in Alexa+/web tool args even after deploy — one-shot clients will always mint a new MCP session. Consider idle TTL on MCP sessions if the map grows under load. |
+| **Status** | mitigated |

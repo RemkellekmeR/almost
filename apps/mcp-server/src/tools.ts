@@ -1,11 +1,16 @@
 import { z } from "zod";
-import type { McpServer } from "@modelcontextprotocol/server";
+import type { McpServer, ServerContext } from "@modelcontextprotocol/server";
 import { getStore } from "@almost/core";
 
 function text(data: unknown) {
   return {
     content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }],
   };
+}
+
+/** MCP transport session id (Mcp-Session-Id), when the client holds a stateful connection. */
+function clientKey(ctx: ServerContext): string | undefined {
+  return ctx.sessionId;
 }
 
 export function registerAlmostTools(server: McpServer): void {
@@ -25,9 +30,9 @@ export function registerAlmostTools(server: McpServer): void {
           .describe("Must be true (or omitted) — Almost is consent-based"),
       }),
     },
-    async (args) => {
+    async (args, ctx) => {
       try {
-        const session = store.startSession(args);
+        const session = store.startSession(args, clientKey(ctx));
         return text({
           ok: true,
           sessionId: session.id,
@@ -88,8 +93,8 @@ export function registerAlmostTools(server: McpServer): void {
         sessionId: z.string().optional(),
       }),
     },
-    async (args) => {
-      const misses = store.listNearMisses(args.sessionId);
+    async (args, ctx) => {
+      const misses = store.listNearMisses(args.sessionId, clientKey(ctx));
       // Full NearMiss objects (incl. graph) so web Alexa+ sim can render forks
       // without a second round-trip. Slim fields remain available on each object.
       return text({
@@ -166,9 +171,9 @@ export function registerAlmostTools(server: McpServer): void {
         sessionId: z.string().optional(),
       }),
     },
-    async (args) => {
+    async (args, ctx) => {
       try {
-        const summary = store.summary(args.sessionId);
+        const summary = store.summary(args.sessionId, clientKey(ctx));
         return text({ ok: true, summary });
       } catch (e) {
         return text({ ok: false, error: String(e) });
