@@ -1,7 +1,7 @@
 # Almost — Devpost submission checklist
 
 Contest: https://amazonappdev2026.devpost.com/ · Alexa+ track · **due Fri Oct 23 2026 12:00pm PT**
-Rules live-checked Oct 13 2026. Submissions close Oct 23 12:00pm PDT; judging Oct 26–Nov 20; winners ~Dec 3.
+Rules live-checked Oct 15 2026. Submissions close Oct 23 12:00pm PDT; judging Oct 26–Nov 20; winners ~Dec 3.
 
 ## Required
 - [ ] Text description of features and functionality (README "Two demo modes" + "MCP tools")
@@ -15,7 +15,7 @@ Rules live-checked Oct 13 2026. Submissions close Oct 23 12:00pm PDT; judging Oc
 
 ## Optional (scored)
 - [ ] Friction log entries (`docs/FRICTION_LOG.md`). These are worth **up to a 10% bonus**. Each entry needs the task, steps, expected vs actual, severity, workaround, and a suggestion.
-- [ ] Feature requests with a priority (Critical / Important / Nice-to-have)
+- [ ] Feature requests with a priority (Critical / Important / Nice-to-have) — see `docs/PRODUCT_FEEDBACK.md`
 
 ## Pre-submit verification
 `npm run typecheck && npm run build` → `npm run demo` → `npm run smoke:mcp` (PASS) → open http://localhost:3000 and confirm the pill shows **live MCP** → walk-past / take me back / export / the other one

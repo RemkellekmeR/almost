@@ -42,7 +42,7 @@ Neon Corridor has unmarked peaks at **~30s** and **~62s**. After the first walk-
 | 1:05 | Disambiguate | **“Alexa, the other one.”** Graph / explanation switches to the other peak (30s ↔ 62s). |
 | 1:20 | Flash MCP | Optional split: `curl` / MCP inspector calling `list_near_misses` + `explain_near_miss` on Streamable HTTP `/mcp` (stateful `Mcp-Session-Id`). |
 | 1:40 | Resume | **“Alexa, take me back.”** Cue points at Approach timestamp. |
-| 2:00 | Export | **“Alexa, export that seed.”** Show MIDI-JSON seed preview (synthetic notes, not copyrighted audio). |
+| 2:00 | Export | **“Alexa, export that seed.”** Show MIDI-JSON seed preview; click **copy** or **download .json** (synthetic notes, not copyrighted audio). |
 | 2:20 | Why it matters | Capture saves what you played; generators continue what you hand them. **Nobody treats the abandoned approach as a first-class object.** Almost does. |
 | 2:40 | Close | Consent-first. Deterministic scoring. MCP tools live. Per-session active jam. HITL only for Devpost submit. |
 

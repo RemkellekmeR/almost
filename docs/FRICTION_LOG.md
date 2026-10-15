@@ -77,9 +77,9 @@ Add dated entries as you hit them. Prefer concrete, reproducible notes over slog
 | **Surface** | Product · Web Alexa+ sim |
 | **Severity** | medium |
 | **Friction** | “Export that seed” — to where? DAW clipboard, MIDI file, Ableton clip, audio stub? Judges will ask; musicians will ask harder. |
-| **Workaround** | Export returns synthetic **MIDI-JSON** / audio-clip-ref preview in the web panel (no copyrighted audio). |
-| **Proposed fix** | Pick one primary path for demo video (download MIDI-JSON + “copy for Ableton”); document others as stretch. |
-| **Status** | open |
+| **Workaround** | Export returns synthetic **MIDI-JSON** in the web panel with **copy** + **download .json** (no copyrighted audio). DAW deep-link still stretch. |
+| **Proposed fix** | Keep MIDI-JSON download + clipboard as primary demo path; Ableton/DAW deep-link later. |
+| **Status** | mitigated |
 
 ---
 
