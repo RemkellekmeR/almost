@@ -57,7 +57,7 @@ Grounded in open items in `FRICTION_LOG.md` / this file — not new product dire
 - **Consent UX for jam listening** — Explicit session-scoped consent card in Alexa+ (start / pause / kill-switch), visible “Almost is listening” state, auto-expire buffers. Continuous ingest without this will not ship. *(FRICTION: Consent always-on jam listening — open / high.)*
 
 ### Important
-- **Seed destination as a first-class path** — Primary demo path is MIDI-JSON download + clipboard copy (now in the web panel). Stretch: Ableton/DAW deep-link. Judges and musicians both ask “export to where?” *(FRICTION: Export target unclear — open / medium; MVP workaround landed.)*
+- **Seed destination as a first-class path** — Primary demo path is MIDI-JSON download + clipboard copy (now in the web panel). Stretch: Ableton/DAW deep-link. Judges and musicians both ask “export to where?” *(FRICTION: Export target unclear — mitigated / medium; MVP workaround landed.)*
 - **Multi-miss voice disambiguation** — When a jam has peaks at ~30s and ~62s, offer a ranked follow-up (“the early lead break, or the late one?”) and time-anchored replies. “The other one” works in the sim; voice still needs the clarifying prompt. *(FRICTION: Multiple near-misses — open / medium.)*
 - **`minProtocolVersion` on the MCP server/SDK** — Track requires ≥ `2025-11-25`, but negotiation silently accepts older or unknown versions. A hard floor (or clear reject) would make eligibility checkable. *(FRICTION: Protocol negotiation — mitigated / medium.)*
 
@@ -66,7 +66,7 @@ Grounded in open items in `FRICTION_LOG.md` / this file — not new product dire
 
 ---
 
-## Devpost Product Feedback draft (Oct 15)
+## Devpost Product Feedback draft (Oct 16)
 
 **Tools used:** the MCP TypeScript SDK v2 (`@modelcontextprotocol/server`, `/express`, `/node`, `/client`) for a self-hosted Streamable HTTP server (7 tools) and the web sim's client, plus Next.js 15 for the web Alexa+ simulation. AWS services are not used yet.
 **Worked well:** `createMcpHandler` + `McpServer.registerTool` with zod schemas made it quick to go from zero to a working tool. Initialize negotiates `2025-11-25` out of the box, and the SDK client connects and calls tools in a few lines. Stateful Streamable HTTP (`Mcp-Session-Id`) made per-client active-jam isolation straightforward once we keyed store state by session and cleaned up on close.

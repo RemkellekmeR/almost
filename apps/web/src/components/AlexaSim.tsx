@@ -24,11 +24,12 @@ type LogLine = {
   via?: ViaTag;
 };
 
+/** Chip order matches docs/DEMO.md: walk-past → other one → take me back → export. */
 const PROMPTS = [
   "Alexa, what did I just walk past?",
+  "Alexa, the other one",
   "Alexa, take me back",
   "Alexa, export that seed",
-  "Alexa, the other one",
   "Alexa, summarize this session",
 ];
 
@@ -43,6 +44,18 @@ export function spokenTime(t: number): string {
   const r = s % 60;
   const mins = m === 1 ? "a minute" : `${m} minutes`;
   return r === 0 ? `about ${mins} in` : `about ${mins} and ${r} second${r === 1 ? "" : "s"} in`;
+}
+
+
+/** Which chip to glow next so a judge can walk the demo without the script open. */
+function suggestedNext(stage: GraphStage, missCount: number, flippedOther: boolean): string | null {
+  if (stage === "idle") return "Alexa, what did I just walk past?";
+  if (stage === "walk-past") {
+    if (missCount > 1 && !flippedOther) return "Alexa, the other one";
+    return "Alexa, take me back";
+  }
+  if (stage === "resume") return "Alexa, export that seed";
+  return null;
 }
 
 function seedSpoken(seed: SeedWindow): string {
@@ -100,6 +113,7 @@ export function AlexaSim() {
   const [listening, setListening] = useState(false);
   const [micAvailable, setMicAvailable] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [flippedOther, setFlippedOther] = useState(false);
   const [pending, startTransition] = useTransition();
   const logRef = useRef<HTMLDivElement>(null);
 
@@ -187,6 +201,7 @@ export function AlexaSim() {
     if (q.includes("walk past") || q.includes("walked past") || q.includes("near miss") || q.includes("near-miss")) {
       const listed = await demoListNearMisses(sessionId);
       setNearMisses(listed.data);
+      setFlippedOther(false);
       if (listed.data.length === 0) {
         setGraph(null);
         push({ role: "alexa", text: "Nothing — every bold moment in this jam was either captured or kept. Nice.", via: tag(listed) });
@@ -202,6 +217,7 @@ export function AlexaSim() {
         return;
       }
       const idx = nearMisses.findIndex((n) => n.id === selected?.id);
+      setFlippedOther(true);
       await describeMiss(nearMisses[(idx + 1) % nearMisses.length], nearMisses);
       return;
     }
@@ -309,8 +325,26 @@ export function AlexaSim() {
             <span className="dot" />
             {sessionTitle}
           </div>
-          <div className={`mode-pill ${mode === "mcp" ? "mcp" : "fallback"}`} title={mcpUrl}>
-            {mode === "mcp" ? "live MCP" : "core fallback"}
+          <div
+            className={`mode-pill ${mode === "mcp" ? "mcp" : "fallback"}`}
+            title={mcpUrl}
+            role="status"
+            aria-label={
+              mode === "mcp"
+                ? `Backend: live MCP at ${mcpUrl}`
+                : `Backend: core fallback (MCP unreachable at ${mcpUrl})`
+            }
+          >
+            <span className="mode-label">{mode === "mcp" ? "live MCP" : "core fallback"}</span>
+            <span className="mode-url" aria-hidden="true">
+              {(() => {
+                try {
+                  return new URL(mcpUrl).host;
+                } catch {
+                  return mcpUrl;
+                }
+              })()}
+            </span>
           </div>
         </div>
       </header>
@@ -324,7 +358,7 @@ export function AlexaSim() {
               speak replies
             </label>
           </div>
-          <div className="log" ref={logRef}>
+          <div className="log" ref={logRef} role="log" aria-live="polite" aria-relevant="additions">
             {log.map((line, i) => (
               <div key={i} className={`bubble ${line.role}`}>
                 <span className="who">{line.role === "alexa" ? "Alexa · Almost" : line.role}</span>
@@ -339,12 +373,22 @@ export function AlexaSim() {
             ))}
             {pending && <div className="bubble alexa thinking"><span className="who">Alexa · Almost</span><p>…</p></div>}
           </div>
-          <div className="chips">
-            {PROMPTS.map((p) => (
-              <button key={p} type="button" className="chip" disabled={pending} onClick={() => ask(p)}>
-                {p.replace(/^Alexa, /, "")}
-              </button>
-            ))}
+          <div className="chips" role="group" aria-label="Demo utterances">
+            {PROMPTS.map((p) => {
+              const next = suggestedNext(stage, nearMisses.length, flippedOther) === p;
+              return (
+                <button
+                  key={p}
+                  type="button"
+                  className={`chip${next ? " next" : ""}`}
+                  disabled={pending}
+                  aria-current={next ? "step" : undefined}
+                  onClick={() => ask(p)}
+                >
+                  {p.replace(/^Alexa, /, "")}
+                </button>
+              );
+            })}
           </div>
           <form
             className="prompt"
@@ -379,6 +423,7 @@ export function AlexaSim() {
                 <button
                   type="button"
                   className={selected?.id === n.id ? "active" : ""}
+                  aria-pressed={selected?.id === n.id}
                   onClick={() => {
                     setSelected(n);
                     setGraph(n.graph);
@@ -403,7 +448,15 @@ export function AlexaSim() {
                 <button
                   type="button"
                   onClick={() => {
-                    void navigator.clipboard?.writeText(seedJson).then(() => setCopied(true));
+                    const done = () => {
+                      setCopied(true);
+                      window.setTimeout(() => setCopied(false), 2000);
+                    };
+                    if (navigator.clipboard?.writeText) {
+                      void navigator.clipboard.writeText(seedJson).then(done).catch(() => {
+                        // Secure-context / permission failure — leave label as "copy"
+                      });
+                    }
                   }}
                 >
                   {copied ? "copied" : "copy"}

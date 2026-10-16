@@ -27,7 +27,7 @@ npm run dev:mcp    # terminal A → http://127.0.0.1:3100/mcp
 npm run dev:web    # terminal B → http://localhost:3000
 ```
 
-Open the web Alexa+ sim. Confirm session pill shows **Neon Corridor (demo jam)** and mode pill **live MCP** (or **core fallback** if MCP is down — still demoable).
+Open the web Alexa+ sim. Confirm session pill shows **Neon Corridor (demo jam)** and mode pill **live MCP** with the MCP host (or **core fallback** if MCP is down — still demoable). Utterance chips follow this script; the glowing **next ·** chip tracks the demo beat.
 
 Neon Corridor has unmarked peaks at **~30s** and **~62s**. After the first walk-past answer, use **“the other one”** to flip.
 
