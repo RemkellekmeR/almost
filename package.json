@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "npm run build -w @almost/core && npm run build -w @almost/mcp-server && npm run build -w @almost/web",
-    "typecheck": "npm run typecheck -w @almost/core && npm run typecheck -w @almost/mcp-server && npm run typecheck -w @almost/web",
+    "typecheck": "npm run typecheck -w @almost/core && npm run build -w @almost/core && npm run typecheck -w @almost/mcp-server && npm run typecheck -w @almost/web",
     "dev:mcp": "npm run dev -w @almost/mcp-server",
     "dev:web": "npm run dev -w @almost/web",
     "start:mcp": "npm run start -w @almost/mcp-server",
