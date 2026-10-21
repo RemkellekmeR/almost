@@ -1,7 +1,7 @@
 # Almost — Devpost submission checklist
 
 Contest: https://amazonappdev2026.devpost.com/ · Alexa+ track · **due Fri Oct 23 2026 12:00pm PT**
-Rules live-checked Oct 16 2026. Submissions close Oct 23 12:00pm PDT; judging Oct 26–Nov 20; winners ~Dec 3.
+Rules live-checked Oct 16 2026. Submissions close Oct 23 12:00pm PDT; judging Nov 9–20 (12:00pm PT); winners ~Dec 3.
 Internal submit-by: **Thu Oct 22**. Remmy presses Submit. Bots do not.
 
 ## Required

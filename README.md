@@ -6,8 +6,6 @@ Consent-based **Alexa+/MCP** agent that detects **creative near-misses** in a ja
 
 > **What this build is:** a working MCP server and a web Alexa+ simulator, running on synthetic fixture jams. The detector really is deterministic code, but its inputs are hand-authored feature frames. This build has **no live audio capture or DSP**. See [What's real vs. fixture](#whats-real-vs-fixture).
 
-**Not** a Case Fit Desk clone, patch suggestor, Capture wrapper, or VCV AI patcher.
-
 ## Contest
 
 - **Amazon Build/Ship/Shape** — Alexa+ track  
@@ -44,7 +42,7 @@ Scoring is **always** deterministic in `@almost/core` — MCP is a transport, no
 ## Quick start
 
 ```bash
-cd /workspace/almost
+git clone https://github.com/RemkellekmeR/almost && cd almost
 npm install
 npm run build
 
@@ -159,7 +157,7 @@ See `.env.example`:
 - `MCP_PUBLIC_URL` — Streamable HTTP URL web server actions call (also `NEXT_PUBLIC_MCP_URL`)
 - `MCP_PORT`, `MCP_HOST` — MCP listen address
 - `ALLOWED_HOSTS` — comma-separated Host allowlist when exposing beyond localhost (defaults to `localhost,127.0.0.1` if `MCP_HOST=0.0.0.0`)
-- `AWS_*` — optional Bedrock stretch (**HITL before spend**)
+- `AWS_*` — optional Bedrock stretch (not used in this build)
 - `DATABASE_URL` — optional; fixtures work in-memory
 
 ## Docs for judges
@@ -167,16 +165,6 @@ See `.env.example`:
 - `docs/DEMO.md` — ≤3 min script  
 - `docs/FRICTION_LOG.md` — friction log (full-format entries)  
 - `docs/PRODUCT_FEEDBACK.md` — product feedback for the tools used + feature requests  
-
-## HITL (Remmy only)
-
-- Devpost submit
-- Public GitHub repo + license visibility
-- Deploy / public MCP + web URL
-- Demo video
-- AWS credits / Bedrock if used
-- Approve original/synthetic fixtures (no copyrighted tracks)
-- Optional Open Agent backup reg — do **not** divert Almost MVP
 
 ## License
 

@@ -8,7 +8,7 @@ Due: **Fri Oct 23 2026 12:00pm PDT**
 Preferred (one process group):
 
 ```bash
-cd /workspace/almost
+git clone https://github.com/RemkellekmeR/almost && cd almost
 npm install
 npm run build
 npm run demo
@@ -20,7 +20,7 @@ npm run demo
 Or two terminals:
 
 ```bash
-cd /workspace/almost
+git clone https://github.com/RemkellekmeR/almost && cd almost
 npm install
 npm run build -w @almost/core
 npm run dev:mcp    # terminal A → http://127.0.0.1:3100/mcp
