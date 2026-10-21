@@ -93,10 +93,19 @@ export class SessionStore {
     clientKey?: string,
   ): Session {
     const key = clientKey ?? "";
-    if (input?.sessionId && this.sessions.has(input.sessionId)) {
-      const existing = this.sessions.get(input.sessionId)!;
-      if (!existing.consent && input.consent !== true) {
-        throw new Error("Consent required to start session.");
+    // Consent-first: the caller must explicitly pass consent: true on every
+    // start, for every session id. false or missing is always a refusal —
+    // fixture-level consent never substitutes for the caller's consent.
+    if (input?.consent !== true) {
+      throw new Error(
+        "Consent required. Almost is consent-based — call start_session with consent: true.",
+      );
+    }
+    if (input.sessionId) {
+      const existing = this.sessions.get(input.sessionId);
+      if (!existing) throw new Error(`Unknown session ${input.sessionId}`);
+      if (!existing.consent) {
+        throw new Error(`Session ${existing.id} has no recorded consent — refusing.`);
       }
       this.activeByClient.set(key, existing.id);
       return existing;
@@ -108,9 +117,6 @@ export class SessionStore {
       [...this.sessions.values()][0];
     if (!demo) {
       throw new Error("No fixture sessions available. Seed fixtures first.");
-    }
-    if (input?.consent === false) {
-      throw new Error("Consent required. Almost is consent-based.");
     }
     this.activeByClient.set(key, demo.id);
     return demo;

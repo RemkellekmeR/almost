@@ -84,6 +84,23 @@ const tools = await client.listTools();
 const names = tools.tools.map((t) => t.name);
 console.log(`smoke: tools ${names.join(", ")}`);
 
+// Consent gate: refusing consent (or omitting it) must fail for every session id.
+for (const args of [
+  { sessionId: "jam-neon-corridor", consent: false },
+  { sessionId: "jam-neon-corridor" },
+  { consent: false },
+  {},
+]) {
+  const res = await client.callTool({ name: "start_session", arguments: args });
+  const body = JSON.parse(res.content?.find((c) => c.type === "text")?.text ?? "{}");
+  if (body.ok !== false) {
+    console.error(`FAIL: start_session ${JSON.stringify(args)} should refuse without consent: true`);
+    await client.close();
+    process.exit(1);
+  }
+}
+console.log("smoke: consent gate refuses consent:false / omitted");
+
 parse(
   await client.callTool({
     name: "start_session",

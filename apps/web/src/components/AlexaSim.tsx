@@ -92,6 +92,15 @@ function getSpeechRecognition(): (new () => SpeechRec) | null {
   return (w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null) as (new () => SpeechRec) | null;
 }
 
+/**
+ * "What did I just walk past?" answers with the strongest walk-past:
+ * highest novelty peak, ties broken by the most recent peak. Neon Corridor's
+ * 30 s peak (0.85) still outranks the 62 s one (0.78).
+ */
+function topNearMiss(list: NearMiss[]): NearMiss {
+  return [...list].sort((a, b) => b.noveltyPeak - a.noveltyPeak || b.peakT - a.peakT)[0];
+}
+
 export function AlexaSim() {
   const [log, setLog] = useState<LogLine[]>([
     {
@@ -129,9 +138,10 @@ export function AlexaSim() {
       const misses = await demoListNearMisses(session.data.id);
       setMode(misses.mode);
       setNearMisses(misses.data);
-      if (misses.data[0]) {
-        setSelected(misses.data[0]);
-        setGraph(misses.data[0].graph);
+      if (misses.data.length > 0) {
+        const top = topNearMiss(misses.data);
+        setSelected(top);
+        setGraph(top.graph);
       }
       setLog((L) => [
         ...L,
@@ -207,7 +217,7 @@ export function AlexaSim() {
         push({ role: "alexa", text: "Nothing — every bold moment in this jam was either captured or kept. Nice.", via: tag(listed) });
         return;
       }
-      await describeMiss(listed.data[0], listed.data, listed);
+      await describeMiss(topNearMiss(listed.data), listed.data, listed);
       return;
     }
 

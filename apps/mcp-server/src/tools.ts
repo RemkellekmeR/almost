@@ -20,14 +20,16 @@ export function registerAlmostTools(server: McpServer): void {
     "start_session",
     {
       description:
-        "Start or resume a consent-based jam session. Defaults to the seeded Neon Corridor demo fixture.",
+        "Start or resume a consent-based jam session. Requires consent: true (false or omitted is refused). Defaults to the seeded Neon Corridor demo fixture.",
       inputSchema: z.object({
         sessionId: z.string().optional().describe("Fixture session id"),
         title: z.string().optional(),
         consent: z
           .boolean()
           .optional()
-          .describe("Must be true (or omitted) — Almost is consent-based"),
+          .describe(
+            "Required: must be explicitly true. false or omitted is refused — Almost is consent-based.",
+          ),
       }),
     },
     async (args, ctx) => {
