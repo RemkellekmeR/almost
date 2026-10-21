@@ -567,8 +567,10 @@
       "label": "Synthetic clip placeholder around peak 1",
       "payload": {
         "path": "fixtures/sessions/jam-neon-corridor.wav",
-        "startMs": 28000,
-        "endMs": 32000
+        "startMs": 0,
+        "endMs": 2000,
+        "placeholder": true,
+        "note": "The wav is a 2 s synthetic placeholder tone, not a recording of this jam. Offsets cover the whole file; startT/endT give the jam-timeline window (28-32 s) this seed stands in for."
       }
     }
   ],
