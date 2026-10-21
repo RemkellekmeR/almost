@@ -55,7 +55,7 @@ Add dated entries as you hit them. Prefer concrete, reproducible notes over slog
 | **Surface** | Voice UX · Product |
 | **Severity** | high (product) |
 | **Friction** | “Detect near-misses while I jam” implies continuous audio/timeline ingest. Creative users and platforms will (rightly) distrust always-on listening without crisp consent, retention, and kill-switch UX. |
-| **Workaround** | Fixture sessions require `consent: true`; `start_session` refuses `consent: false`. No live mic ingest in MVP — synthetic timelines only. |
+| **Workaround** | `start_session` refuses any call that doesn't pass `consent: true` explicitly (false or omitted), for every session id. This was tightened 2026-10-20, see below. Fixtures also carry `consent: true`. MVP has no live mic ingest, only synthetic timelines. |
 | **Proposed fix** | Explicit session-scoped consent card in Alexa+; visible “Almost is listening / paused”; auto-expire buffers; never train on user audio without separate opt-in. |
 | **Status** | open |
 
@@ -154,3 +154,34 @@ Add dated entries as you hit them. Prefer concrete, reproducible notes over slog
 | **Workaround** | (1) Stateful Streamable HTTP: active jam pointer is keyed by `Mcp-Session-Id`, cleaned up on session close. `smoke:mcp` proves two concurrent clients each keep their own active. (2) Web Alexa+ sim still passes jam `sessionId` explicitly on every tool call so one-shot connect→call→close stays correct across connections. (3) `ALLOWED_HOSTS` env (comma-separated) configures `allowedHosts` for a future public hostname; defaults unchanged (localhost/127.0.0.1 when binding `0.0.0.0`). |
 | **Suggestion** | Keep explicit jam `sessionId` in Alexa+/web tool args even after deploy — one-shot clients will always mint a new MCP session. Consider idle TTL on MCP sessions if the map grows under load. |
 | **Status** | mitigated |
+
+---
+
+## 2026-10-20 entries (pre-submit audit)
+
+### 2026-10-20: No hosted Alexa+ MCP client to test against, so the Alexa+ path is sim-only
+| | |
+|--|--|
+| **Surface** | Alexa+ · MCP · Docs |
+| **Severity** | high (for track fidelity) |
+| **Task** | Prove that a real Alexa+ conversation can call Almost's self-hosted MCP server (spec 2025-11-25, Streamable HTTP) end to end: “Alexa, what did I just walk past?” → `list_near_misses` → `explain_near_miss`. |
+| **Steps** | 1. Built and ran `apps/mcp-server` on `127.0.0.1:3100/mcp`; `npm run smoke:mcp` PASS (protocol 2025-11-25, 7 tools, session isolation). 2. Looked through the contest page and the public Alexa+ / Alexa developer docs we could find for how to register or point an Alexa+ client at a builder-hosted MCP URL, and for which `protocolVersion` and session behavior that client uses. 3. Looked for a sandbox or test console that would invoke an MCP tool from an Alexa+ utterance. |
+| **Expected** | A documented way, even a test-only one, to connect a self-hosted MCP server to Alexa+ during the hackathon, plus client details (sent `protocolVersion`, `Accept` header, whether it keeps `Mcp-Session-Id` across turns). |
+| **Actual** | We found nothing we could use within the hackathon window. With no hosted Alexa+ MCP client to target, we couldn't test the real voice path. Client-side behavior (protocol version, session reuse) stayed unknown, so we designed defensively: explicit jam `sessionId` on every tool call, and a smoke test that pins `2025-11-25`. This might be a gap in our searching rather than in the docs, and we'd welcome a pointer. |
+| **Workaround** | A web Alexa+ simulator (Next.js) calls the same live MCP tools over Streamable HTTP and labels every reply `via MCP · <tools>`. Judges can replay it with `npm run demo` + `npm run smoke:mcp`, or with curl or the MCP Inspector (see `docs/DEMO.md`). |
+| **Suggestion** | Give Alexa+ track builders a hosted test client or console that accepts an MCP URL, and publish a one-page “Alexa+ as an MCP client” spec: protocol version sent, required headers, `Mcp-Session-Id` handling, auth expectations, and Host/allowlist guidance for public deploys. |
+| **Status** | open |
+
+### 2026-10-20: Consent gate trusted the fixture's flag instead of the caller
+| | |
+|--|--|
+| **Surface** | MCP · Consent (Almost code, not an Amazon tool) |
+| **Severity** | high (consent-first pitch) |
+| **Task** | Confirm `start_session` refuses when the caller withholds consent. |
+| **Steps** | Over live MCP: `start_session {"sessionId":"jam-neon-corridor","consent":false}`. |
+| **Expected** | `ok: false`, consent required. |
+| **Actual (before fix)** | `ok: true`. The gate only ran when the stored fixture lacked consent, and Neon Corridor's fixture has `consent: true`, so the caller's `false` was ignored. Calling with no `sessionId` was refused correctly, so this path was easy to miss. |
+| **Fix** | `SessionStore.startSession` now refuses any call where the caller doesn't pass `consent: true` explicitly (`false` or omitted), for every session id, before any fixture lookup. Unknown session ids now error instead of silently falling back to the demo jam. The tool schema says consent is required. `smoke:mcp` asserts that `consent:false` and omitted consent both return `ok:false`. |
+| **Suggestion** | For consent-gated MCP tools, make consent a required schema field and check it in the tool handler before any state is touched. Test the refusal path in CI, not just the happy path. |
+| **Status** | closed |
+

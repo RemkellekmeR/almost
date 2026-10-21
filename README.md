@@ -2,7 +2,9 @@
 
 > “Alexa, what did I just walk past?”
 
-Consent-based **Alexa+/MCP** agent that detects **creative near-misses** in a jam — moments you approached something new, then abandoned the thread — and walks you back with a reconstructable event graph plus exportable audio/MIDI seeds.
+Consent-based **Alexa+/MCP** agent that detects **creative near-misses** in a jam — moments you approached something new, then abandoned the thread — and walks you back with a reconstructable event graph plus an exportable seed (MIDI-JSON notes or an audio-clip reference) for the abandoned thread.
+
+> **What this build is:** a working MCP server and a web Alexa+ simulator, running on synthetic fixture jams. The detector really is deterministic code, but its inputs are hand-authored feature frames. This build has **no live audio capture or DSP**. See [What's real vs. fixture](#whats-real-vs-fixture).
 
 **Not** a Case Fit Desk clone, patch suggestor, Capture wrapper, or VCV AI patcher.
 
@@ -100,7 +102,7 @@ npm run smoke:mcp    # terminal B
 | “Alexa, what did I just walk past?” | Top unmarked near-miss (peaks @ **30s** and **62s** in the fixture). |
 | “Alexa, the other one” | Switches to the other peak and re-explains. |
 | “Alexa, take me back” | Cue at Approach for the selected miss. |
-| “Alexa, export that seed” | MIDI-JSON / audio-clip-ref preview. |
+| “Alexa, export that seed” | Fixture seed window: MIDI-JSON notes (or a placeholder audio-clip ref). |
 
 ### Verify web → MCP
 
@@ -114,27 +116,40 @@ npm run smoke:mcp    # terminal B
 
 | Tool | Role |
 |------|------|
-| `start_session` | Consent + activate fixture/demo session (per MCP session) |
+| `start_session` | Activate a fixture/demo session (per MCP session). **Requires `consent: true`**; `false` or omitted is refused for every session id |
 | `ingest_timeline` | Append events, re-score |
 | `list_near_misses` | Unmarked near-misses (**full objects + graph**) |
 | `explain_near_miss` | Fixture explanation + graph (LLM stub later) |
 | `resume_near_miss` | Walk back to Approach |
-| `export_seed` | MIDI-JSON / audio-clip-ref seed |
+| `export_seed` | Return the fixture seed window for a near-miss (MIDI-JSON notes, or a placeholder audio-clip ref) |
 | `session_summary` | Session rollup |
 
 ## Near-miss scoring
 
-Deterministic sliding-window heuristics on feature frames:
+Deterministic sliding-window heuristics (`packages/core/src/scoring.ts`) over per-frame features (`flux`, `onsetDensity`, `repetition`, `commitment`):
 
-- spectral flux / onset density → **novelty**
-- self-similarity → **repetition**
-- loop/stabilize → **commitment**
+- novelty = `clamp(flux·0.5 + onsetDensity·0.5 − repetition·0.3)`
+- **repetition** and **commitment** decide whether you went back to a safe loop
+
+In this build the feature frames are **hand-authored fixture values** (2 s frames in `fixtures/sessions/*.json`). Their names follow the audio features they model (spectral flux, onset density, self-similarity), but **no audio is analyzed**. A real DSP front end that extracts them from a live jam is future work.
 
 **Near-miss** = high novelty ramp **then** return to high-repetition safe pattern **without** a capture/export marker near the peak.
 
 Graph: **Approach → Peak → Abandon → SafeLoop**
 
 LLM is **not** used for scoring (explanations only, stubbed with fixtures today).
+
+## What's real vs. fixture
+
+| Piece | Status |
+|-------|--------|
+| MCP server: spec 2025-11-25, Streamable HTTP, 7 tools, stateful `Mcp-Session-Id` | **Real and live.** `npm run smoke:mcp` asserts the protocol version, the tool results, and session isolation |
+| Consent gate on `start_session` | **Real.** Anything other than an explicit `consent: true` is refused |
+| Near-miss detector + event graph | **Real deterministic code**, running on hand-authored feature frames |
+| Explanations | Templated from detector output (no LLM) |
+| Seed export | Returns the fixture's seed windows: synthetic MIDI-JSON notes, or an audio-clip ref to `jam-neon-corridor.wav`. That wav is a **2 s synthetic placeholder tone**, not a recording of the jam |
+| Alexa+ | **Web simulator** (text + optional browser speech) calling the MCP server. It has not been tested against a hosted Alexa+ client |
+| AWS services | **Not used** in this build |
 
 ## Environment
 
@@ -150,8 +165,8 @@ See `.env.example`:
 ## Docs for judges
 
 - `docs/DEMO.md` — ≤3 min script  
-- `docs/FRICTION_LOG.md` — friction-log bonus template + early notes  
-- `docs/PRODUCT_FEEDBACK.md` — product feedback stub  
+- `docs/FRICTION_LOG.md` — friction log (full-format entries)  
+- `docs/PRODUCT_FEEDBACK.md` — product feedback for the tools used + feature requests  
 
 ## HITL (Remmy only)
 
